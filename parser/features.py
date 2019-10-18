@@ -63,7 +63,7 @@ WH_WORDS = [
     'how'
 ]
 
-POLAR_MARKERS = ["Do",
+POLAR_MARKERS = ["do",
 	"does",
 	"did",
 	"didn’t",
@@ -170,7 +170,7 @@ def get_if(example):
     return False
     
 def get_or(example):
-    if 'or' in example.q2.lower():
+    if ' or ' in example.q2.lower():
         return True
     else:
         return False

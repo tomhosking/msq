@@ -113,6 +113,12 @@ if __name__ == "__main__":
         class_preds.append(pred)
         class_golds.append(row['type_msq'])
 
+        row['parser_pred'] = pred
+
+    
+    with open('./data/bonnies_msqs_labelled.json', "w") as f:
+        json.dump(data, f)
+
     print(confusion_matrix(class_golds, class_preds))
 
 
