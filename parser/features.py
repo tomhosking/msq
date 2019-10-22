@@ -6,6 +6,8 @@ import nltk
 
 from collections import defaultdict
 
+from nltk.tokenize import TreebankWordTokenizer
+
 nlp = spacy.load("en_core_web_sm")
 
 ELABORATIVE_MARKERS = [
@@ -26,7 +28,11 @@ CONDITIONAL_MARKERS = [
     'as a result',
     'it follows',
     'subsequently',
-    'consequently'
+    'consequently',
+    'if yes',
+    'if not',
+    'if the answer is yes',
+    'if the answer is no'
 ]
 
 PRONOUNS = [
@@ -92,12 +98,28 @@ POLAR_MARKERS = ["do",
 	"ought"]
 
 # What's the threshold semantic cosine similarity to distinguish related qs?
-SIMILARITY_THRESHOLD = 0.5
+SIMILARITY_THRESHOLD = 0.75
+
+def find_sublist(sub, bigger):
+    if not bigger:
+        return -1
+    if not sub:
+        return 0
+    first, rest = sub[0], sub[1:]
+    pos = 0
+    try:
+        while True:
+            pos = bigger.index(first, pos) + 1
+            if not rest or bigger[pos:pos+len(rest)] == rest:
+                return pos
+    except ValueError:
+        return -1
 
 def get_all_feats(example):
     feats = defaultdict(lambda: None)
 
     feats['pro_q2'] = pro_q2(example)
+    feats['double_pro_q2'] = double_pro_q2(example)
     feats['vp_ell_q2'] = vp_ell_q2(example)
     feats['polar_q1'] = polar_q1(example)
     feats['polar_q2'] = polar_q2(example)
@@ -116,61 +138,89 @@ def get_all_feats(example):
 
 def pro_q2(example):
     for marker in PRONOUNS:
-        if marker in example.q2.lower():
+        marker_toks = TreebankWordTokenizer().tokenize(marker)
+        q_toks = [tok.lower() for tok in TreebankWordTokenizer().tokenize(example.q2)] # lower after tokenising as case info is useful
+        if find_sublist(marker_toks, q_toks) >= 0:
             return True
+    return False
+
+def double_pro_q2(example):
+    count = 0
+    for marker in PRONOUNS:
+        marker_toks = TreebankWordTokenizer().tokenize(marker)
+        q_toks = [tok.lower() for tok in TreebankWordTokenizer().tokenize(example.q2)] # lower after tokenising as case info is useful
+        if find_sublist(marker_toks, q_toks) >= 0:
+            count += 1
+
+    if count > 1:
+        return True
     return False
 
 def vp_ell_q2(example):
     for marker in VERB_ELLIPSIS_MARKERS:
-        if marker in example.q2.lower():
+        marker_toks = TreebankWordTokenizer().tokenize(marker)
+        q_toks = [tok.lower() for tok in TreebankWordTokenizer().tokenize(example.q2)] # lower after tokenising as case info is useful
+        if find_sublist(marker_toks, q_toks) >= 0:
             return True
     return False
 
 def polar_q1(example):
     for marker in POLAR_MARKERS:
-        if marker in example.q1.lower():
+        marker_toks = TreebankWordTokenizer().tokenize(marker)
+        q_toks = [tok.lower() for tok in TreebankWordTokenizer().tokenize(example.q1)] # lower after tokenising as case info is useful
+        if find_sublist(marker_toks, q_toks) >= 0:
             return True
     return False
 
 def polar_q2(example):
     for marker in POLAR_MARKERS:
-        if marker in example.q1.lower():
+        marker_toks = TreebankWordTokenizer().tokenize(marker)
+        q_toks = [tok.lower() for tok in TreebankWordTokenizer().tokenize(example.q2)] # lower after tokenising as case info is useful
+        if find_sublist(marker_toks, q_toks) >= 0:
             return True
     return False
 
 
 def wh_q1(example):
     for marker in WH_WORDS:
-        if marker in example.q1.lower():
+        marker_toks = TreebankWordTokenizer().tokenize(marker)
+        q_toks = [tok.lower() for tok in TreebankWordTokenizer().tokenize(example.q1)] # lower after tokenising as case info is useful
+        if find_sublist(marker_toks, q_toks) >= 0:
             return True
     return False
 
 def wh_q2(example):
     for marker in WH_WORDS:
-        if marker in example.q2.lower():
+        marker_toks = TreebankWordTokenizer().tokenize(marker)
+        q_toks = [tok.lower() for tok in TreebankWordTokenizer().tokenize(example.q2)] # lower after tokenising as case info is useful
+        if find_sublist(marker_toks, q_toks) >= 0:
             return True
     return False
 
 def get_qs(example):
-    if '?' not in example.q2.lower():
+    if example.q1.lower()[-1] == '?' and example.q2.lower()[-1] != '?':
         return True
     else:
         return False
 
 def elab_cue(example):
     for marker in ELABORATIVE_MARKERS:
-        if marker in example.q2.lower():
+        marker_toks = TreebankWordTokenizer().tokenize(marker)
+        q_toks = [tok.lower() for tok in TreebankWordTokenizer().tokenize(example.q2)] # lower after tokenising as case info is useful
+        if find_sublist(marker_toks, q_toks) >= 0:
             return True
     return False
 
 def get_if(example):
     for marker in CONDITIONAL_MARKERS:
-        if marker in example.q2.lower():
+        marker_toks = TreebankWordTokenizer().tokenize(marker)
+        q_toks = [tok.lower() for tok in TreebankWordTokenizer().tokenize(example.q2)] # lower after tokenising as case info is useful
+        if find_sublist(marker_toks, q_toks) >= 0:
             return True
     return False
     
 def get_or(example):
-    if ' or ' in example.q2.lower():
+    if example.q2.lower()[:3] == 'or ':
         return True
     else:
         return False
