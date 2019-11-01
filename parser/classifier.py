@@ -1,4 +1,4 @@
-import json
+import json, csv
 import nltk
 from tqdm import tqdm
 
@@ -170,32 +170,48 @@ def plot_confusion_matrix(y_true, y_pred, classes,
 
 if __name__ == "__main__":
     
-    with open('./data/bonnies_msqs_full_dataset.json') as f:
-        data = json.load(f)
+    # with open('./data/MSQ_training_data/LifeHacks_msqs.csv') as f:
+    #     data = json.load(f)
 
-    data = [x for k,v in data.items() for x in v]
+    from os import listdir
+    from os.path import isfile, join
+    mypath = './data/MSQ_training_data/'
+    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
-    class_counts = defaultdict(int)
-
-    class_golds = []
-    class_preds = []
-    for row in tqdm(data):
+    for filename in onlyfiles:
+        print('Parsing {:}'.format(filename))
+        with open('./data/MSQ_training_data/'+filename) as f:
+            csv_reader = csv.DictReader(f)
         
-        pred = classify(ParsedExample(row))
-        class_counts[pred] +=1
+            data = []
+            for ix, row in enumerate(csv_reader):
+                if ix > 0:
 
-        # class_preds.append(MSQ_TYPES.index(pred))
-        # class_golds.append(MSQ_TYPES.index(row['type_lvb'].upper()))
+                    data.append(row)
 
-        row['parser_pred'] = pred
+        # data = [x for k,v in data.items() for x in v]
 
-    
-    with open('./data/bonnies_msqs_full_parsed.json', "w") as f:
-        json.dump(data, f)
+        class_counts = defaultdict(int)
 
-    # print(confusion_matrix(class_golds, class_preds))
+        class_golds = []
+        class_preds = []
+        for row in tqdm(data):
+            
+            pred = classify(ParsedExample(row))
+            class_counts[pred] +=1
 
-    print(class_counts)
+            # class_preds.append(MSQ_TYPES.index(pred))
+            # class_golds.append(MSQ_TYPES.index(row['type_lvb'].upper()))
+
+            row['parser_pred'] = pred
+
+        
+        with open('./data/MSQ_training_data_silvered/'+filename.replace('csv','json'), "w") as f:
+            json.dump(data, f)
+
+        # print(confusion_matrix(class_golds, class_preds))
+
+        print(filename, class_counts)
 
     # plot_confusion_matrix(class_golds, class_preds, MSQ_TYPES, normalize=False)
     # plt.show()
