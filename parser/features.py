@@ -66,7 +66,8 @@ WH_WORDS = [
     'where',
     'when',
     'why',
-    'how'
+    'how',
+    'which'
 ]
 
 POLAR_MARKERS = ["do",

@@ -1,5 +1,6 @@
 import json
 import nltk
+from tqdm import tqdm
 
 from sklearn.metrics import confusion_matrix
 from sklearn.utils.multiclass import unique_labels
@@ -75,8 +76,8 @@ class ParsedExample:
     def __init__(self, row):
         self.q1 = row['q1']
         self.q2 = row['q2']
-        self.parse1 = nltk.Tree.fromstring(row['parse1'])
-        self.parse2 = nltk.Tree.fromstring(row['parse2'])
+        # self.parse1 = nltk.Tree.fromstring(row['parse1'])
+        # self.parse2 = nltk.Tree.fromstring(row['parse2'])
         
 
 
@@ -169,33 +170,35 @@ def plot_confusion_matrix(y_true, y_pred, classes,
 
 if __name__ == "__main__":
     
-    with open('./data/bonnies_msqs_parsed_labelled.json') as f:
+    with open('./data/bonnies_msqs_full_dataset.json') as f:
         data = json.load(f)
+
+    data = [x for k,v in data.items() for x in v]
 
     class_counts = defaultdict(int)
 
     class_golds = []
     class_preds = []
-    for row in data:
+    for row in tqdm(data):
         
         pred = classify(ParsedExample(row))
         class_counts[pred] +=1
 
-        class_preds.append(MSQ_TYPES.index(pred))
-        class_golds.append(MSQ_TYPES.index(row['type_lvb'].upper()))
+        # class_preds.append(MSQ_TYPES.index(pred))
+        # class_golds.append(MSQ_TYPES.index(row['type_lvb'].upper()))
 
         row['parser_pred'] = pred
 
     
-    with open('./data/bonnies_msqs_labelled.json', "w") as f:
+    with open('./data/bonnies_msqs_full_parsed.json', "w") as f:
         json.dump(data, f)
 
     # print(confusion_matrix(class_golds, class_preds))
 
     print(class_counts)
 
-    plot_confusion_matrix(class_golds, class_preds, MSQ_TYPES, normalize=False)
-    plt.show()
+    # plot_confusion_matrix(class_golds, class_preds, MSQ_TYPES, normalize=False)
+    # plt.show()
 
 
     
