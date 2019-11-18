@@ -10,6 +10,8 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 import numpy as np
 
+from nltk.tokenize import TreebankWordTokenizer
+
 import features
 
 MSQ_TYPES = [
@@ -41,7 +43,8 @@ CLASS_REQUIREMENTS = {
         'if': False,
         'elab_cue': False,
         'qs': False,
-        'semantic_overlap': True
+        'semantic_overlap': True,
+        'sep_cue': False
     },
     'DISJUNCTIVE': {
         'polar_q1': True,
@@ -51,23 +54,27 @@ CLASS_REQUIREMENTS = {
         'elab_cue': False,
         'wh_q1': False,
         'wh_q2': False,
-        'qs': False
+        'qs': False,
+        'sep_cue': False
     },
     'CONDITIONAL': {
         'polar_q1': True,
         'if': True,
         'elab_cue': False,
-        'wh_q1': False
+        'wh_q1': False,
+        'sep_cue': False
     },
     'ELABORATIVE': {
         'if': False,
-        'elab_cue': True
+        'elab_cue': True,
+        'sep_cue': False
     }
     ,
     'ELABORATIVE2': {
         'if': False,
         'qs': True,
-        'semantic_overlap': True
+        'semantic_overlap': True,
+        'sep_cue': False
     }
 }
 
@@ -76,6 +83,10 @@ class ParsedExample:
     def __init__(self, row):
         self.q1 = row['q1']
         self.q2 = row['q2']
+
+        self.q1_toks = q_toks = [tok.lower() for tok in TreebankWordTokenizer().tokenize(self.q1)] # lower after tokenising as case info is useful
+        self.q2_toks = q_toks = [tok.lower() for tok in TreebankWordTokenizer().tokenize(self.q2)] # lower after tokenising as case info is useful
+        
         # self.parse1 = nltk.Tree.fromstring(row['parse1'])
         # self.parse2 = nltk.Tree.fromstring(row['parse2'])
         
@@ -104,9 +115,9 @@ def feats_to_class(feats):
         if matched:
             return msq_class
     
-    if not feats['pro_q2'] and feats['semantic_overlap']:
+    if not feats['pro_q2'] and not feats['semantic_overlap']:
         # No anaphora OR overlap -> unrelated 
-        return 'NONE'
+        return 'UNK' # could return NONE here - but use UNK for sake of dataset cleanliness
     else:
         # If there _is_ anaphora but no other cues, assume MSQ but unknown type
         return 'UNK'
@@ -170,7 +181,7 @@ def plot_confusion_matrix(y_true, y_pred, classes,
 
 if __name__ == "__main__":
     
-    # with open('./data/MSQ_training_data/LifeHacks_msqs.csv') as f:
+    # with open('./data/bonnies_msqs_full_dataset.json') as f:
     #     data = json.load(f)
 
     from os import listdir
@@ -189,7 +200,7 @@ if __name__ == "__main__":
 
                     data.append(row)
 
-        # data = [x for k,v in data.items() for x in v]
+    # data = [x for k,v in data.items() for x in v]
 
         class_counts = defaultdict(int)
 
@@ -207,11 +218,12 @@ if __name__ == "__main__":
 
         
         with open('./data/MSQ_training_data_silvered/'+filename.replace('csv','json'), "w") as f:
+        # with open('./data/bonnies_msqs_full_silvered', "w") as f:
             json.dump(data, f)
 
-        # print(confusion_matrix(class_golds, class_preds))
+    # print(confusion_matrix(class_golds, class_preds))
 
-        print(filename, class_counts)
+    print(class_counts)
 
     # plot_confusion_matrix(class_golds, class_preds, MSQ_TYPES, normalize=False)
     # plt.show()
