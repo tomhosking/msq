@@ -146,7 +146,7 @@ def pro_q2(example):
     q_toks = example.q2_toks # lower after tokenising as case info is useful
     for marker in PRONOUNS:
         marker_toks = TreebankWordTokenizer().tokenize(marker)
-        if find_sublist(marker_toks, q_toks) >= 0:
+        if find_sublist(marker_toks, q_toks) > 0:
             return True
     return False
 
@@ -155,7 +155,7 @@ def double_pro_q2(example):
     q_toks = example.q2_toks # lower after tokenising as case info is useful
     for marker in PRONOUNS:
         marker_toks = TreebankWordTokenizer().tokenize(marker)
-        if find_sublist(marker_toks, q_toks) >= 0:
+        if find_sublist(marker_toks, q_toks) > 0:
             count += 1
 
     if count > 1:
@@ -167,7 +167,7 @@ def vp_ell_q2(example):
     for marker in VERB_ELLIPSIS_MARKERS:
         marker_toks = TreebankWordTokenizer().tokenize(marker)
         
-        if find_sublist(marker_toks, q_toks) >= 0:
+        if find_sublist(marker_toks, q_toks) > 0:
             return True
     return False
 
@@ -176,7 +176,7 @@ def polar_q1(example):
 
     for marker in POLAR_MARKERS:
         marker_toks = TreebankWordTokenizer().tokenize(marker)
-        if find_sublist(marker_toks, q_toks) >= 0:
+        if find_sublist(marker_toks, q_toks) > 0:
             return True
     return False
 
@@ -185,7 +185,7 @@ def polar_q2(example):
     for marker in POLAR_MARKERS:
         marker_toks = TreebankWordTokenizer().tokenize(marker)
         
-        if find_sublist(marker_toks, q_toks) >= 0:
+        if find_sublist(marker_toks, q_toks) > 0:
             return True
     return False
 
@@ -195,7 +195,7 @@ def wh_q1(example):
     for marker in WH_WORDS:
         marker_toks = TreebankWordTokenizer().tokenize(marker)
         
-        if find_sublist(marker_toks, q_toks) >= 0:
+        if find_sublist(marker_toks, q_toks) > 0:
             return True
     return False
 
@@ -204,7 +204,7 @@ def wh_q2(example):
     for marker in WH_WORDS:
         marker_toks = TreebankWordTokenizer().tokenize(marker)
         
-        if find_sublist(marker_toks, q_toks) >= 0:
+        if find_sublist(marker_toks, q_toks) > 0:
             return True
     return False
 
@@ -219,7 +219,7 @@ def elab_cue(example):
     for marker in ELABORATIVE_MARKERS:
         marker_toks = TreebankWordTokenizer().tokenize(marker)
         
-        if find_sublist(marker_toks, q_toks) >= 0:
+        if find_sublist(marker_toks, q_toks) > 0:
             return True
     return False
 
@@ -228,7 +228,7 @@ def get_if(example):
     for marker in CONDITIONAL_MARKERS:
         marker_toks = TreebankWordTokenizer().tokenize(marker)
         
-        if find_sublist(marker_toks, q_toks) >= 0:
+        if find_sublist(marker_toks, q_toks) > 0:
             return True
     return False
     
@@ -243,7 +243,7 @@ def sep_cue(example):
     for marker in SEPARABLE_MARKERS:
         marker_toks = TreebankWordTokenizer().tokenize(marker)
         
-        if find_sublist(marker_toks, q_toks) >= 0:
+        if find_sublist(marker_toks, q_toks) > 0:
             return True
     return False
 

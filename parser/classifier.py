@@ -67,7 +67,8 @@ CLASS_REQUIREMENTS = {
     'ELABORATIVE': {
         'if': False,
         'elab_cue': True,
-        'sep_cue': False
+        'sep_cue': False,
+        'or': False
     }
     ,
     'ELABORATIVE2': {
@@ -81,8 +82,8 @@ CLASS_REQUIREMENTS = {
 
 class ParsedExample:
     def __init__(self, row):
-        self.q1 = row['q1']
-        self.q2 = row['q2']
+        self.q1 = row['q1'].strip()
+        self.q2 = row['q2'].strip()
 
         self.q1_toks = q_toks = [tok.lower() for tok in TreebankWordTokenizer().tokenize(self.q1)] # lower after tokenising as case info is useful
         self.q2_toks = q_toks = [tok.lower() for tok in TreebankWordTokenizer().tokenize(self.q2)] # lower after tokenising as case info is useful
@@ -184,6 +185,15 @@ if __name__ == "__main__":
     # with open('./data/bonnies_msqs_full_dataset.json') as f:
     #     data = json.load(f)
 
+    # ex = {'q1': 'Is it only about team strategy?', 'q2': ' Or do the individual dogs have to be particularly suited to the game?'}
+    # example = ParsedExample(ex)
+    # print(features.get_all_feats(example))
+    # print(classify(example))
+    # print(example.q2.lower()[:2] == 'or')
+    # print(example.q2.lower()[:3] == 'or ')
+
+    # exit()
+
     from os import listdir
     from os.path import isfile, join
     mypath = './data/MSQ_training_data/'
@@ -223,7 +233,7 @@ if __name__ == "__main__":
 
     # print(confusion_matrix(class_golds, class_preds))
 
-    print(class_counts)
+        print(class_counts)
 
     # plot_confusion_matrix(class_golds, class_preds, MSQ_TYPES, normalize=False)
     # plt.show()
