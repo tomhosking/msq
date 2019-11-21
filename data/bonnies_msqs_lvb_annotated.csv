@@ -1,6 +1,6 @@
 q1,q2,type_lvb,explicit_lvb,ans1,ans2,type_given,source
 Are chloroplasts larger than nuclei?,"Specifically, are they larger in a leaf cell.",elaborative,y,,,PolarQ-S,bonnies_data/msq_dataset_2.csv
-Are holidays in US safe?,Is it safe for a muslim to go to US?,separable,,,,PolarQ-PolarQ,bonnies_data/msq_dataset_4.csv
+Are holidays in US safe?,Is it safe for a muslim to go to US?,reformulation,,,,PolarQ-PolarQ,bonnies_data/msq_dataset_4.csv
 Are there any alternatives for people who are allergic to certain types of makeup?,"Specifically, I am interested in lipstick.",elaborative,y,,,PolarQ-S,bonnies_data/msq_dataset_1.csv
 Are there any countries in the world with no speed limits?,"If yes, I'd like to have examples.",conditional,y,,,PolarQ-S,bonnies_data/msq_dataset_1.csv
 Are there any good diagrams of antidepressant action on the web?,"Specifically, I am looking for a diagram which explains how the common drugs work to lay people.",elaborative,y,,,PolarQ-S,bonnies_data/msq_dataset_4.csv
@@ -26,7 +26,7 @@ Do I have to pay VAT tax on a purchase from the EU and shipped to the US?,I want
 Do I have to take out the seal on my rear window to install my Sirius satellite care system?,Is there a better way?,conditional,,,,PolarQ-PolarQ,bonnies_data/msq_dataset_1.csv
 Do most people in Japan drive to work or ride the train?,What is the average distance one lives from their house in Japan?,separable,,,,PolarQ-WhQ,bonnies_data/msq_dataset_2.csv
 Do plants feel?,Do plants have nervous responses (of a sort) similar to those of animals?,reformulation,,,,PolarQ-PolarQ,bonnies_data/msq_dataset_2.csv
-Do some people share the same Social Security number?,How many possible Social Security Numbers can there be?,separable,,,,PolarQ-WhQ,bonnies_data/msq_dataset_4.csv
+Do some people share the same Social Security number?,How many possible Social Security Numbers can there be?,reformulation,,,,PolarQ-WhQ,bonnies_data/msq_dataset_4.csv
 Do testosterone levels in men affect hair loss?,What I mean is will a higher level of testosterone in men make one more likely to have a receding hair line or other hair loss associated with age?,reformulation,,,,PolarQ-WhQ,bonnies_data/msq_dataset_1.csv
 Do US citizen's need a passport to travel to Mexico at the current time?,"Actually, I am planning a trip in February, so if the answer is yes, I want to know how long it would take.",conditional,,,,PolarQ-S,bonnies_data/msq_dataset_1.csv
 Do you need a motorcycle license to rent a scooter in Greece?,"Specifically, I am on the island of Rhodes (Rodos).",elaborative,y,,,PolarQ-S,bonnies_data/msq_dataset_2.csv
@@ -36,8 +36,8 @@ Does anyone know the combo to a 99 Toyota Tacoma spark plugs?,"For example, I wa
 Does donating blood or plasma on a regular basis cause you to lose weight?,"Specifically, I'm talking about fat around the midsection.",elaborative,y,,,PolarQ-S,bonnies_data/msq_dataset_2.csv
 Does heat from the sun intensify through glass?,Do sun rays through a window intensify the heat?,reformulation,,,,PolarQ-PolarQ,bonnies_data/msq_dataset_3.csv
 Does high protein intake lead to kidney failure easily?,"For example, I take 2 servings of protein milk per day, 52g per serving.",elaborative,y,,,PolarQ-S,bonnies_data/msq_dataset_2.csv
-Does sinus surgery gives full relief?,What type of sinus surgery gives relief?,separable,,,,PolarQ-WhQ,bonnies_data/msq_dataset_3.csv
-Does Windows XP pay any attention to autoexec.bat?,Has something replaced that startup scripting facility?,disjunctive,,,,PolarQ-PolarQ,bonnies_data/msq_dataset_4.csv
+Does sinus surgery gives full relief?,What type of sinus surgery gives relief?,reformulation,,,,PolarQ-WhQ,bonnies_data/msq_dataset_3.csv
+Does Windows XP pay any attention to autoexec.bat?,Or has something replaced that startup scripting facility?,disjunctive,,,,PolarQ-PolarQ,bonnies_data/msq_dataset_4.csv
 Does Yahoo have messenger groups like MSN?,Does Yahoo have any free Scrabble Classic downloads?,separable,,,,PolarQ-PolarQ,bonnies_data/msq_dataset_2.csv
 Does your heart really stop when you sneeze?,"I've heard it's the closest you get to dying without something actually going wrong, or having trauma to the body.",elaborative,y,,,PolarQ-S,bonnies_data/msq_dataset_2.csv
 Does your taste in alcoholic beverages change with the seasons?,"For instance, I prefer wine during the fall and winter, but I crave beer more in the summer.",elaborative,y,,,PolarQ-S,bonnies_data/msq_dataset_0.csv
@@ -90,7 +90,7 @@ How do you mount a satellite radio antenna in your car?,How do you get the wire 
 How do you vote in Iraq?,I need to know how do Iraqis vote in order to compare and contrast it with the way Americans vote.,elaborative,y,,,WhQ-S,bonnies_data/msq_dataset_1.csv
 How do you write Happy Birthday in Korean characters?,Is it written the same for a man or a woman?,separable,,,,WhQ-PolarQ,bonnies_data/msq_dataset_0.csv
 How does a search engine search so fast?,How can they go through all the words in a million or so pages in less than a second?,reformulation,,,,WhQ-WhQ,bonnies_data/msq_dataset_0.csv
-How does divorce affect a child?,How can one minimize the trauma on the child?,separable,,,,WhQ-WhQ,bonnies_data/msq_dataset_1.csv
+How does divorce affect a child?,How can one minimize the trauma on the child?,reformulation,,,,WhQ-WhQ,bonnies_data/msq_dataset_1.csv
 How far is it from Milpitas to San Pablo Calofornia?,"For instance, I want to know how far it is from UPS center in San Pablo, to the Lite-On service center in Milpatas.",elaborative,y,,,WhQ-S,bonnies_data/msq_dataset_0.csv
 How fast does hair grow?,How fast does the average person's hair grow in miles per hour?,reformulation,,,,WhQ-WhQ,bonnies_data/msq_dataset_1.csv
 How is a penguin born?,Are penguins born from an egg?,elaborative,,,,WhQ-PolarQ,bonnies_data/msq_dataset_5.csv
@@ -105,7 +105,7 @@ How many players in the NFL are from Colorado?,Give a list of the players and wh
 How many world changing inventions has Britain invented as a nation?,"For example, inventions might be the radar, jet engine, computer etc.",elaborative,y,,,WhQ-S,bonnies_data/msq_dataset_3.csv
 How much caffeine is in green tea?,"I'm confused, as some people say a lot, others say just a little.",elaborative,y,,,WhQ-S,bonnies_data/msq_dataset_3.csv
 How much energy does the average person produce?,Give any measurement.,elaborative,y,,,WhQ-S,bonnies_data/msq_dataset_5.csv
-How much water is too much?,Is there even such thing as too much water?,separable,,,,WhQ-PolarQ,bonnies_data/msq_dataset_5.csv
+How much water is too much?,Is there even such thing as too much water?,elaborative,,,,WhQ-PolarQ,bonnies_data/msq_dataset_5.csv
 How old are human beings?,How long have we been around?,reformulation,,,,WhQ-WhQ,bonnies_data/msq_dataset_4.csv
 How should I act on a date?,Can someone give me tips?,elaborative,,,,WhQ-PolarQ,bonnies_data/msq_dataset_6.csv
 How to make a good cup of tea?,Tell me the recipe.,elaborative,y,,,WhQ-S,bonnies_data/msq_dataset_0.csv
