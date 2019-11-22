@@ -134,25 +134,25 @@ def plot_confusion_matrix(y_true, y_pred, classes,
     """
     if not title:
         if normalize:
-            title = 'Normalized confusion matrix'
+            title = 'Confusion matrix'
         else:
-            title = 'Confusion matrix, without normalization'
+            title = 'Confusion matrix'
 
     # Compute confusion matrix
     cm = confusion_matrix(y_true, y_pred)
     # Only use the labels that appear in the data
     cls_ixs = unique_labels(y_true, y_pred)
     classes = [classes[ix] for ix in cls_ixs]
-    if normalize:
-        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-        print("Normalized confusion matrix")
-    else:
-        print('Confusion matrix, without normalization')
+    # if normalize:
+    cm_norm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+    # print("Confusion matrix")
+    # else:
+    #     print('Confusion matrix, without normalization')
 
     print(cm)
 
     fig, ax = plt.subplots()
-    im = ax.imshow(cm, interpolation='nearest', cmap=cmap)
+    im = ax.imshow(cm_norm, interpolation='nearest', cmap=cmap)
     ax.figure.colorbar(im, ax=ax)
     # We want to show all ticks...
     ax.set(xticks=np.arange(cm.shape[1]),
@@ -169,12 +169,12 @@ def plot_confusion_matrix(y_true, y_pred, classes,
 
     # Loop over data dimensions and create text annotations.
     fmt = '.2f' if normalize else 'd'
-    thresh = cm.max() / 2.
+    thresh = cm_norm.max() / 2.
     for i in range(cm.shape[0]):
         for j in range(cm.shape[1]):
             ax.text(j, i, format(cm[i, j], fmt),
                     ha="center", va="center",
-                    color="white" if cm[i, j] > thresh else "black")
+                    color="white" if cm_norm[i, j] > thresh else "black", fontsize=16, fontweight='bold')
     fig.tight_layout()
     return ax
 
@@ -182,8 +182,15 @@ def plot_confusion_matrix(y_true, y_pred, classes,
 
 if __name__ == "__main__":
     
-    # with open('./data/bonnies_msqs_full_dataset.json') as f:
-    #     data = json.load(f)
+    data = []
+    with open('./data/bonnies_msqs_lvb_annotated.csv') as f:
+        # data = json.load(f)
+        csv_reader = csv.DictReader(f)
+        for ix, row in enumerate(csv_reader):
+            if ix > 0:
+
+                data.append(row)
+
 
     # ex = {'q1': 'Is it only about team strategy?', 'q2': ' Or do the individual dogs have to be particularly suited to the game?'}
     # example = ParsedExample(ex)
@@ -194,49 +201,50 @@ if __name__ == "__main__":
 
     # exit()
 
-    from os import listdir
-    from os.path import isfile, join
-    mypath = './data/MSQ_training_data/'
-    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    # from os import listdir
+    # from os.path import isfile, join
+    # mypath = './data/MSQ_training_data/'
+    # onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
-    for filename in onlyfiles:
-        print('Parsing {:}'.format(filename))
-        with open('./data/MSQ_training_data/'+filename) as f:
-            csv_reader = csv.DictReader(f)
+    # for filename in onlyfiles:
+    #     print('Parsing {:}'.format(filename))
+    #     with open('./data/MSQ_training_data/'+filename) as f:
+    #         csv_reader = csv.DictReader(f)
         
-            data = []
-            for ix, row in enumerate(csv_reader):
-                if ix > 0:
+    #         data = []
+    #         for ix, row in enumerate(csv_reader):
+    #             if ix > 0:
 
-                    data.append(row)
+    #                 data.append(row)
 
     # data = [x for k,v in data.items() for x in v]
 
-        class_counts = defaultdict(int)
+    class_counts = defaultdict(int)
 
-        class_golds = []
-        class_preds = []
-        for row in tqdm(data):
-            
-            pred = classify(ParsedExample(row))
+    class_golds = []
+    class_preds = []
+    for row in tqdm(data):
+        
+        pred = classify(ParsedExample(row))
+        if pred not in ['UNK','NONE']:
             class_counts[pred] +=1
 
-            # class_preds.append(MSQ_TYPES.index(pred))
-            # class_golds.append(MSQ_TYPES.index(row['type_lvb'].upper()))
+            class_preds.append(MSQ_TYPES.index(pred))
+            class_golds.append(MSQ_TYPES.index(row['type_lvb'].upper()))
 
-            row['parser_pred'] = pred
+        row['parser_pred'] = pred
 
         
-        with open('./data/MSQ_training_data_silvered/'+filename.replace('csv','json'), "w") as f:
-        # with open('./data/bonnies_msqs_full_silvered', "w") as f:
-            json.dump(data, f)
+        # with open('./data/MSQ_training_data_silvered/'+filename.replace('csv','json'), "w") as f:
+    with open('./data/bonnies_msqs_silvered.json', "w") as f:
+        json.dump(data, f)
 
     # print(confusion_matrix(class_golds, class_preds))
 
-        print(class_counts)
+    print(class_counts)
 
-    # plot_confusion_matrix(class_golds, class_preds, MSQ_TYPES, normalize=False)
-    # plt.show()
+    plot_confusion_matrix(class_golds, class_preds, MSQ_TYPES, normalize=False)
+    plt.show()
 
 
     
